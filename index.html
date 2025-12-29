@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Year 2026 Countdown</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    <div class="bg-mesh"></div>
+    
+    <div id="particlesContainer"></div>
+    <div id="orbsContainer"></div>
+    
+    <button id="fullscreen-btn" class="fullscreen-btn" title="Toggle Fullscreen">
+        <svg class="fullscreen-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+        </svg>
+    </button>
+    
+    <button id="twenty-second-btn" class="twenty-second-btn" title="Show 20 Second Countdown">
+        <span>20s</span>
+    </button>
+    
+    <div class="container">
+        <div class="countdown-flying-fireworks" id="countdownFlyingFireworks"></div>
+        
+        <div class="header">
+            <h1 id="year-title">2025</h1>
+        </div>
+        
+        <div class="countdown" id="countdown">
+            <div class="time-card" id="days-unit">
+                <div class="card-glow"></div>
+                <div class="time-content">
+                    <span class="time-value" id="days">00</span>
+                    <span class="time-label">Days</span>
+                </div>
+            </div>
+            <div class="time-card" id="hours-unit">
+                <div class="card-glow"></div>
+                <div class="time-content">
+                    <span class="time-value" id="hours">00</span>
+                    <span class="time-label">Hours</span>
+                </div>
+            </div>
+            <div class="time-card" id="minutes-unit">
+                <div class="card-glow"></div>
+                <div class="time-content">
+                    <span class="time-value" id="minutes">00</span>
+                    <span class="time-label">Minutes</span>
+                </div>
+            </div>
+            <div class="time-card" id="seconds-unit">
+                <div class="card-glow"></div>
+                <div class="time-content">
+                    <span class="time-value" id="seconds">00</span>
+                    <span class="time-label">Seconds</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="celebration" id="celebration">
+            <!-- Elegant Background -->
+            <div class="celebration-bg-gradient"></div>
+            <div class="celebration-bg-overlay"></div>
+            
+            <!-- Firework Containers -->
+            <div class="fireworks-white-sparks" id="whiteSparksContainer"></div>
+            <div class="fireworks-golden-bursts" id="goldenBurstsContainer"></div>
+            <div class="fireworks-flying" id="flyingFireworksContainer"></div>
+            
+            <!-- Main Content -->
+            <div class="celebration-content">
+                <!-- Elegant decorative elements -->
+                <div class="celebration-ornament ornament-left"></div>
+                <div class="celebration-ornament ornament-right"></div>
+                
+                <div class="celebration-title-wrapper">
+                    <div class="celebration-title-3d" id="celebrationTitle">
+                        <span class="title-text">Happy New Year</span>
+                        <span class="title-text title-text-shadow"></span>
+                    </div>
+                    <div class="celebration-subtitle-elegant">Welcome to a New Beginning</div>
+                </div>
+                
+                <div class="celebration-divider"></div>
+                
+                <div class="celebration-year-wrapper">
+                    <div class="celebration-year-3d" id="celebrationYear">
+                        <span class="year-text">2026</span>
+                        <span class="year-text year-text-shadow"></span>
+                    </div>
+                    <div class="celebration-sparkles">
+                        <span class="sparkle sparkle-1">✨</span>
+                        <span class="sparkle sparkle-2">✨</span>
+                        <span class="sparkle sparkle-3">✨</span>
+                        <span class="sparkle sparkle-4">✨</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Big Fireworks Container -->
+            <div class="big-fireworks-container" id="bigFireworksContainer"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

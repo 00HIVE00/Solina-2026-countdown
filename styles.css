@@ -1,0 +1,936 @@
+/* --- 1. CORE VARIABLES & RESET --- */
+:root {
+    --gold: #d4af37;
+    --gold-bright: #f1e5ac;
+    --aurora: #40e0d0;
+    --deep-midnight: #05070a;
+    --glass: rgba(255, 255, 255, 0.05);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    font-family: 'Arial', sans-serif;
+    background: #0a0e27;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.5s ease;
+}
+
+/* Background during final 20 seconds - matches countdown section */
+body.final-countdown {
+    background: #0a0e27 !important;
+    /* Removed animation - matches regular countdown background */
+}
+
+/* Update bg-gradient and bg-mesh to match during final countdown */
+body.final-countdown .bg-gradient {
+    background: #0a0e27 !important;
+    opacity: 1 !important;
+    animation: none !important;
+}
+
+body.final-countdown .bg-mesh {
+    opacity: 0 !important;
+}
+
+/* --- 2. BACKGROUND DECORATIONS --- */
+.bg-gradient {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, #ff0080, #ff8c00, #40e0d0, #9d4edd, #06ffa5);
+    animation: bgShift 15s ease infinite;
+    opacity: 0.3;
+    z-index: 0;
+}
+
+@keyframes bgShift {
+    0%, 100% { transform: translate(-25%, -25%) rotate(0deg); }
+    50% { transform: translate(-25%, -25%) rotate(180deg); }
+}
+
+.particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: white;
+    border-radius: 50%;
+    animation: particleFloat 6s linear infinite;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    pointer-events: none;
+}
+
+@keyframes particleFloat {
+    0% { transform: translateY(100vh); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-100vh); opacity: 0; }
+}
+
+/* Acceleration Effect for 10s mark */
+.particles-fast .particle {
+    animation-duration: 1s !important;
+    background: var(--gold) !important;
+    box-shadow: 0 0 10px var(--gold);
+}
+
+/* --- 3. UI CONTROLS (BUTTONS) --- */
+.fullscreen-btn, .twenty-second-btn {
+    position: fixed;
+    top: 20px;
+    z-index: 1000;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.fullscreen-btn { right: 20px; width: 50px; }
+.twenty-second-btn { right: 80px; width: 80px; font-weight: 600; }
+
+.fullscreen-btn:hover, .twenty-second-btn:hover {
+    background: rgba(241, 188, 188, 0.2);
+    transform: scale(1.1);
+}
+
+/* --- 4. COUNTDOWN LAYOUT --- */
+.container {
+    text-align: center;
+    z-index: 10;
+    width: 100%;
+    position: relative;
+}
+
+/* Flying Fireworks for Countdown */
+.countdown-flying-fireworks {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+    will-change: contents;
+}
+
+.header h1 {
+    font-size: clamp(6rem, 18vw, 12rem);
+    background: linear-gradient(45deg, #fff, var(--aurora));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8vh;
+    letter-spacing: 10px;
+}
+
+.countdown {
+    display: flex;
+    gap: clamp(40px, 6vw, 100px);
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+}
+
+/* Center the countdown when only showing seconds */
+body.final-countdown .countdown {
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+}
+
+.time-card {
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: clamp(60px, 8vw, 80px) clamp(50px, 7vw, 70px);
+    min-width: clamp(280px, 25vw, 350px);
+    transition: all 0.5s ease;
+}
+
+.time-value {
+    font-size: clamp(6rem, 12vw, 10rem);
+    font-weight: bold;
+    color: white;
+    display: block;
+    line-height: 1.2;
+}
+
+.time-label {
+    font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-top: 20px;
+    font-weight: 600;
+}
+
+/* --- 5. INTENSITY STATES (FINAL 20s) --- */
+body.final-countdown {
+    background: linear-gradient(135deg, 
+        #1a0033 0%, 
+        #330066 25%, 
+        #6600cc 50%, 
+        #ff0066 75%, 
+        #ff6600 100%);
+    animation: finalCountdownBg 3s ease infinite;
+}
+
+/* Dramatic Background Shift */
+body.final-countdown .bg-gradient {
+    background: radial-gradient(circle at center, #1a1a2e 0%, #000 100%);
+    opacity: 0.8;
+}
+
+/* The Elegant Gold Circle Transform - Large centered seconds display */
+.time-card.final-seconds {
+    width: clamp(500px, 80vw, 750px) !important;
+    height: clamp(500px, 80vw, 750px) !important;
+    border-radius: 50% !important;
+    border: 6px solid var(--gold) !important;
+    background: radial-gradient(circle at center,
+        rgba(10, 14, 39, 0.95) 0%,
+        rgba(10, 14, 39, 0.85) 50%,
+        rgba(5, 7, 10, 0.95) 100%) !important;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 100px rgba(212, 175, 55, 0.6) !important;
+    margin: 0 auto;
+}
+
+.time-card.final-seconds .time-value {
+    font-size: clamp(12rem, 25vw, 20rem) !important;
+    background: linear-gradient(180deg, #fff 30%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+}
+
+.time-card.final-seconds .time-label {
+    font-size: clamp(2.5rem, 5vw, 4.5rem) !important;
+    color: var(--gold) !important;
+    text-align: center;
+}
+
+/* Shake Animation for Final 10s */
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    20% { transform: translate(-2px, -1px) rotate(-0.5deg); }
+    40% { transform: translate(-1px, 2px) rotate(0.5deg); }
+    60% { transform: translate(2px, 1px) rotate(0deg); }
+    80% { transform: translate(-1px, -2px) rotate(-0.5deg); }
+    100% { transform: translate(1px, 2px) rotate(0.5deg); }
+}
+
+/* --- 6. CINEMATIC CELEBRATION FINALE --- */
+.celebration {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 1000;
+    background: #0a0005;
+    /* Removed background animation - too expensive, causes lag */
+}
+
+/* Elegant Subtle Background - Optimized */
+.celebration-bg-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center,
+        rgba(45, 10, 26, 0.4) 0%,
+        rgba(26, 5, 9, 0.3) 30%,
+        rgba(13, 0, 3, 0.2) 60%,
+        transparent 100%);
+    z-index: 1;
+    /* Simplified animation - only opacity for performance */
+    animation: bgPulse 8s ease-in-out infinite;
+    will-change: opacity;
+    transform: translateZ(0); /* GPU acceleration */
+}
+
+@keyframes bgPulse {
+    0%, 100% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.celebration-bg-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 30% 40%, rgba(45, 10, 26, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 70% 60%, rgba(26, 5, 9, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(13, 0, 3, 0.1) 0%, transparent 50%);
+    z-index: 2;
+    /* Removed transform animation - causes lag */
+    transform: translateZ(0); /* GPU acceleration */
+}
+
+.celebration-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 20px;
+    perspective: 1000px;
+    overflow: hidden;
+}
+
+/* Elegant Ornamental Decorations - Optimized */
+.celebration-ornament {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border: 3px solid rgba(212, 175, 55, 0.3);
+    border-radius: 50%;
+    z-index: 1;
+    pointer-events: none;
+    animation: ornamentFloat 10s ease-in-out infinite;
+    will-change: transform, opacity;
+    transform: translateZ(0); /* GPU acceleration */
+}
+
+.ornament-left {
+    top: 10%;
+    left: 5%;
+    border-top: none;
+    border-right: none;
+    transform: translateZ(0) rotate(-45deg);
+}
+
+.ornament-right {
+    bottom: 10%;
+    right: 5%;
+    border-bottom: none;
+    border-left: none;
+    transform: translateZ(0) rotate(45deg);
+    animation-delay: 2s;
+}
+
+.ornament-left::before,
+.ornament-right::before {
+    content: '';
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border: 2px solid rgba(212, 175, 55, 0.2);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translateZ(0) translate(-50%, -50%);
+}
+
+@keyframes ornamentFloat {
+    0%, 100% {
+        transform: translateZ(0) translateY(0);
+        opacity: 0.3;
+    }
+    50% {
+        transform: translateZ(0) translateY(-15px);
+        opacity: 0.5;
+    }
+}
+
+/* Elegant Subtitle - Optimized */
+.celebration-subtitle-elegant {
+    font-size: clamp(1rem, 2.5vw, 1.8rem);
+    color: rgba(212, 175, 55, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 12px;
+    margin-top: 30px;
+    font-weight: 300;
+    animation: fadeInUp 1.5s ease-out 0.5s both;
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    will-change: transform, opacity;
+    transform: translateZ(0); /* GPU acceleration */
+}
+
+/* Elegant Divider - Optimized */
+.celebration-divider {
+    width: 300px;
+    height: 2px;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(212, 175, 55, 0.3) 20%,
+        rgba(212, 175, 55, 0.8) 50%,
+        rgba(212, 175, 55, 0.3) 80%,
+        transparent 100%);
+    margin: 40px 0;
+    position: relative;
+    animation: dividerExpand 1.5s ease-out 0.8s both;
+    will-change: width, opacity;
+    transform: translateZ(0); /* GPU acceleration */
+}
+
+.celebration-divider::before,
+.celebration-divider::after {
+    content: '✦';
+    position: absolute;
+    top: 50%;
+    transform: translateZ(0) translateY(-50%);
+    color: rgba(212, 175, 55, 0.8);
+    font-size: 1.5rem;
+    animation: sparkleRotate 4s linear infinite;
+    will-change: transform;
+}
+
+.celebration-divider::before {
+    left: -30px;
+}
+
+.celebration-divider::after {
+    right: -30px;
+}
+
+@keyframes dividerExpand {
+    0% {
+        width: 0;
+        opacity: 0;
+    }
+    100% {
+        width: 300px;
+        opacity: 1;
+    }
+}
+
+@keyframes sparkleRotate {
+    0% { transform: translateZ(0) translateY(-50%) rotate(0deg); }
+    100% { transform: translateZ(0) translateY(-50%) rotate(360deg); }
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateZ(0) translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateZ(0) translateY(0);
+    }
+}
+
+/* Elegant Sparkles around Year */
+.celebration-sparkles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.sparkle {
+    position: absolute;
+    font-size: 2rem;
+    color: rgba(212, 175, 55, 0.8);
+    animation: sparkleFloat 5s ease-in-out infinite;
+    text-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
+    will-change: transform, opacity;
+    transform: translateZ(0); /* GPU acceleration */
+}
+
+.sparkle-1 {
+    top: -20%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.sparkle-2 {
+    top: -20%;
+    right: 10%;
+    animation-delay: 1s;
+}
+
+.sparkle-3 {
+    bottom: -20%;
+    left: 10%;
+    animation-delay: 2s;
+}
+
+.sparkle-4 {
+    bottom: -20%;
+    right: 10%;
+    animation-delay: 3s;
+}
+
+@keyframes sparkleFloat {
+    0%, 100% {
+        transform: translateZ(0) translateY(0);
+        opacity: 0.5;
+    }
+    50% {
+        transform: translateZ(0) translateY(-15px);
+        opacity: 0.8;
+    }
+}
+
+/* Big Fireworks Container */
+.big-fireworks-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 8;
+    overflow: hidden;
+}
+
+.big-firework {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    pointer-events: none;
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    box-shadow: 0 0 20px currentColor;
+}
+
+.big-firework-particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 15px currentColor, 0 0 30px currentColor;
+    animation: bigFireworkExplode 2s ease-out forwards;
+    will-change: transform, opacity;
+    transform: translateZ(0);
+}
+
+@keyframes bigFireworkExplode {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--big-tx, 0), var(--big-ty, 0)) scale(0);
+        opacity: 0;
+    }
+}
+
+.celebration-title-wrapper {
+    margin-bottom: 40px;
+    animation: cinematicEntrance 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    position: relative;
+    z-index: 2;
+}
+
+/* 3D Metallic Gold Text with Glitter Texture */
+.celebration-title-3d {
+    position: relative;
+    display: inline-block;
+    font-size: clamp(4rem, 10vw, 9rem);
+    font-weight: 900;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    transform-style: preserve-3d;
+}
+
+.title-text {
+    position: relative;
+    display: block;
+    background: linear-gradient(135deg, 
+        #d4af37 0%, 
+        #f1e5ac 20%, 
+        #ffd700 40%, 
+        #f1e5ac 60%, 
+        #d4af37 80%, 
+        #b8941f 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.8)); /* Single drop-shadow */
+    transform: translateZ(0) translateZ(50px) rotateX(-5deg);
+    animation: metallicShimmer 8s ease-in-out infinite; /* Slower for performance */
+    will-change: background-position;
+}
+
+.title-text-shadow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #000 0%, #1a0509 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transform: translateZ(-30px) translateY(15px) scale(1.02);
+    opacity: 0.6;
+    filter: blur(8px);
+    z-index: -1;
+}
+
+@keyframes metallicShimmer {
+    0%, 100% { 
+        background-position: 0% 50%;
+    }
+    50% { 
+        background-position: 100% 50%;
+    }
+}
+
+@keyframes cinematicEntrance {
+    0% {
+        transform: translateZ(0) translateY(-100px) scale(0.8);
+        opacity: 0;
+    }
+    100% {
+        transform: translateZ(0) translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.celebration-subtitle {
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    animation: fadeInUp 1.2s ease-out 0.3s both;
+}
+
+.celebration-year-wrapper {
+    position: relative;
+    margin: 20px 0;
+    animation: cinematicEntrance 2s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+    transform-style: preserve-3d;
+    z-index: 11;
+    background: none !important;
+}
+
+/* Background removed - no overlay */
+.celebration-year-3d {
+    background: none !important;
+}
+
+/* 3D Metallic Gold Year with Glitter */
+.celebration-year-3d {
+    position: relative;
+    display: inline-block;
+    font-size: clamp(10rem, 25vw, 22rem);
+    font-weight: 900;
+    letter-spacing: 30px;
+    transform-style: preserve-3d;
+}
+
+.year-text {
+    position: relative;
+    display: block;
+    background: linear-gradient(180deg, 
+        #b8941f 0%, 
+        #d4af37 15%, 
+        #f1e5ac 30%, 
+        #ffd700 50%, 
+        #f1e5ac 70%, 
+        #d4af37 85%, 
+        #b8941f 100%);
+    background-size: 100% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 50px rgba(212, 175, 55, 1)); /* Single drop-shadow */
+    transform: translateZ(0) translateZ(80px) rotateX(-8deg);
+    animation: yearMetallicShine 8s ease-in-out infinite, 
+               yearFloat 6s ease-in-out infinite; /* Slower for performance */
+    will-change: background-position, transform;
+}
+
+.year-text-shadow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #000 0%, #1a0509 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transform: translateZ(-50px) translateY(25px) scale(1.03);
+    opacity: 0.7;
+    filter: blur(12px);
+    z-index: -1;
+}
+
+@keyframes yearMetallicShine {
+    0%, 100% { 
+        background-position: 0% 0%;
+    }
+    50% { 
+        background-position: 0% 100%;
+    }
+}
+
+@keyframes yearFloat {
+    0%, 100% { transform: translateZ(0) translateZ(80px) rotateX(-8deg) translateY(0); }
+    50% { transform: translateZ(0) translateZ(80px) rotateX(-8deg) translateY(-5px); } /* Reduced movement */
+}
+
+
+/* Firework Types - White Shimmering Sparks (Optimized) */
+.fireworks-white-sparks {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 4;
+    will-change: contents;
+}
+
+.white-spark {
+    position: absolute;
+    width: 2px;
+    height: 50px; /* Reduced from 60px */
+    background: linear-gradient(to bottom,
+        transparent 0%,
+        rgba(255, 255, 255, 0.7) 30%,
+        rgba(255, 255, 255, 0.9) 50%,
+        rgba(255, 255, 255, 0.7) 70%,
+        transparent 100%);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6); /* Reduced glow */
+    animation: sparkFall 2s linear forwards;
+    transform-origin: center top;
+    will-change: transform, opacity;
+    transform: translateZ(0); /* GPU acceleration */
+}
+
+@keyframes sparkFall {
+    0% {
+        transform: translateY(-100px) translateZ(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) translateZ(0) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Firework Types - Golden Bursts (Optimized) */
+.fireworks-golden-bursts {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+    will-change: contents;
+}
+
+.golden-burst {
+    position: absolute;
+    width: 6px; /* Reduced from 8px */
+    height: 6px;
+    background: radial-gradient(circle,
+        rgba(255, 215, 0, 1) 0%,
+        rgba(212, 175, 55, 0.7) 50%,
+        transparent 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.6); /* Simplified */
+    animation: burstExplode 1.2s ease-out forwards;
+    will-change: transform, opacity;
+    transform: translateZ(0); /* GPU acceleration */
+}
+
+@keyframes burstExplode {
+    0% {
+        transform: translateZ(0) scale(0) translate(0, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateZ(0) scale(2.5) translate(var(--burst-x, 0), var(--burst-y, 0));
+        opacity: 0;
+    }
+}
+
+/* Flying Fireworks - Rockets that launch and explode */
+.fireworks-flying {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 4;
+    will-change: contents;
+}
+
+.flying-rocket {
+    position: absolute;
+    width: 4px;
+    height: 8px;
+    background: linear-gradient(to top,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 215, 0, 0.9) 50%,
+        rgba(255, 140, 0, 0.8) 100%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    box-shadow: 
+        0 0 10px rgba(255, 215, 0, 0.8),
+        0 0 20px rgba(255, 140, 0, 0.6),
+        0 -20px 15px rgba(255, 140, 0, 0.4); /* Trail effect */
+    animation: rocketFly 1s ease-out forwards;
+    transform-origin: center bottom;
+    will-change: transform, opacity;
+    transform: translateZ(0);
+}
+
+/* Bigger, more colorful rockets during final 20 seconds */
+.final-countdown .flying-rocket,
+.flying-rocket.final-rocket {
+    width: 8px;
+    height: 16px;
+    background: linear-gradient(to top,
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 0, 150, 1) 20%,
+        rgba(255, 100, 0, 1) 40%,
+        rgba(255, 215, 0, 1) 60%,
+        rgba(0, 255, 200, 1) 80%,
+        rgba(100, 0, 255, 1) 100%);
+    box-shadow: 
+        0 0 20px rgba(255, 0, 150, 1),
+        0 0 40px rgba(255, 100, 0, 0.9),
+        0 0 60px rgba(0, 255, 200, 0.8),
+        0 -30px 25px rgba(255, 100, 0, 0.6),
+        0 -50px 35px rgba(255, 0, 150, 0.4);
+    animation: rocketFly 1s ease-out forwards, finalRocketPulse 0.5s ease-in-out infinite;
+}
+
+@keyframes finalRocketPulse {
+    0%, 100% {
+        filter: brightness(1) saturate(1);
+    }
+    50% {
+        filter: brightness(1.5) saturate(1.5);
+    }
+}
+
+.flying-rocket::before {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 20px;
+    background: linear-gradient(to bottom,
+        rgba(255, 140, 0, 0.6) 0%,
+        rgba(255, 215, 0, 0.4) 50%,
+        transparent 100%);
+    animation: rocketTrail 1s ease-out forwards;
+}
+
+.final-countdown .flying-rocket::before,
+.flying-rocket.final-rocket::before {
+    width: 4px;
+    height: 40px;
+    background: linear-gradient(to bottom,
+        rgba(255, 0, 150, 0.8) 0%,
+        rgba(255, 100, 0, 0.7) 25%,
+        rgba(255, 215, 0, 0.6) 50%,
+        rgba(0, 255, 200, 0.5) 75%,
+        transparent 100%);
+    box-shadow: 
+        0 0 15px rgba(255, 0, 150, 0.6),
+        0 0 25px rgba(255, 100, 0, 0.5);
+}
+
+@keyframes rocketTrail {
+    0% {
+        height: 20px;
+        opacity: 0.8;
+    }
+    100% {
+        height: 40px;
+        opacity: 0;
+    }
+}
+
+@keyframes rocketFly {
+    0% {
+        transform: translateZ(0) translate(0, 0) rotate(-45deg);
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.9;
+    }
+    100% {
+        transform: translateZ(0) translate(var(--target-x, 0), var(--target-y, 0)) rotate(-45deg);
+        opacity: 0;
+    }
+}
+
+
+/* --- 7. FIREWORKS (OPTIMIZED) --- */
+.firework {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    pointer-events: none;
+    will-change: transform, opacity;
+    transform: translateZ(0); /* GPU acceleration */
+    animation: explode 0.8s ease-out forwards;
+    box-shadow: 0 0 8px currentColor;
+}
+
+@keyframes explode {
+    0% { 
+        transform: translate(0, 0) translateZ(0) scale(1); 
+        opacity: 1; 
+    }
+    100% { 
+        transform: translate(var(--tx), var(--ty)) translateZ(0) scale(0); 
+        opacity: 0; 
+    }
+}
+
+/* --- 8. MOBILE RESPONSIVENESS --- */
+@media (max-width: 768px) {
+    .header h1 { font-size: clamp(3rem, 12vw, 5rem); margin-bottom: 4vh; }
+    .countdown { gap: 20px; }
+    .time-card { min-width: 120px; padding: 30px 20px; }
+    .time-value { font-size: clamp(3rem, 8vw, 5rem); }
+    .time-label { font-size: clamp(0.9rem, 2vw, 1.2rem); }
+    .time-card.final-seconds { width: 280px !important; height: 280px !important; }
+}
