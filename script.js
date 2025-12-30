@@ -320,6 +320,8 @@ function resetUI() {
     finalCountdownActive = false;
     ultraIntenseActive = false;
     clearInterval(fireworkInterval);
+    // Stop any celebration music/sounds that might still be playing
+    stopCelebrationMusic();
     document.body.classList.remove('final-countdown', 'ultra-intense-active');
     particlesContainer.classList.remove('particles-fast');
     document.querySelector('.container').style.animation = 'none';
