@@ -938,6 +938,11 @@ body.final-countdown .bg-gradient {
     /* Countdown layout */
     .container {
         padding: 0 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
     }
 
     .header h1 {
@@ -949,11 +954,17 @@ body.final-countdown .bg-gradient {
     .countdown {
         flex-direction: column;
         gap: 18px;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
     }
 
     .time-card {
         min-width: 160px;
+        width: 100%;
+        max-width: 200px;
         padding: 24px 18px;
+        margin: 0 auto;
     }
 
     .time-value {
