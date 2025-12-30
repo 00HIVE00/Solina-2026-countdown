@@ -926,11 +926,177 @@ body.final-countdown .bg-gradient {
 }
 
 /* --- 8. MOBILE RESPONSIVENESS --- */
+@media (max-width: 1024px) {
+    /* Slightly smaller on tablets / small laptops */
+    .time-card {
+        min-width: clamp(200px, 35vw, 260px);
+        padding: 40px 30px;
+    }
+}
+
 @media (max-width: 768px) {
-    .header h1 { font-size: clamp(3rem, 12vw, 5rem); margin-bottom: 4vh; }
-    .countdown { gap: 20px; }
-    .time-card { min-width: 120px; padding: 30px 20px; }
-    .time-value { font-size: clamp(3rem, 8vw, 5rem); }
-    .time-label { font-size: clamp(0.9rem, 2vw, 1.2rem); }
-    .time-card.final-seconds { width: 280px !important; height: 280px !important; }
+    /* Countdown layout */
+    .container {
+        padding: 0 16px;
+    }
+
+    .header h1 {
+        font-size: clamp(3rem, 12vw, 5rem);
+        margin-bottom: 4vh;
+        letter-spacing: 4px;
+    }
+
+    .countdown {
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .time-card {
+        min-width: 160px;
+        padding: 24px 18px;
+    }
+
+    .time-value {
+        font-size: clamp(3rem, 10vw, 4.5rem);
+    }
+
+    .time-label {
+        font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+        letter-spacing: 2px;
+        margin-top: 12px;
+    }
+
+    .time-card.final-seconds {
+        width: 260px !important;
+        height: 260px !important;
+        border-width: 4px !important;
+    }
+
+    .time-card.final-seconds .time-value {
+        font-size: clamp(5rem, 18vw, 7rem) !important;
+    }
+
+    .time-card.final-seconds .time-label {
+        font-size: clamp(1.2rem, 4vw, 1.6rem) !important;
+    }
+
+    /* Top-right buttons */
+    .fullscreen-btn,
+    .twenty-second-btn {
+        top: 10px;
+        height: 40px;
+        border-radius: 10px;
+    }
+
+    .fullscreen-btn {
+        right: 12px;
+        width: 40px;
+    }
+
+    .twenty-second-btn {
+        right: 60px;
+        width: 64px;
+        font-size: 0.85rem;
+    }
+
+    /* Celebration content */
+    .celebration-content {
+        padding: 16px;
+    }
+
+    .celebration-title-3d {
+        font-size: clamp(2.4rem, 8vw, 3.2rem);
+        letter-spacing: 4px;
+    }
+
+    .celebration-subtitle-elegant {
+        font-size: clamp(0.7rem, 2.4vw, 1rem);
+        letter-spacing: 6px;
+        margin-top: 20px;
+    }
+
+    .celebration-divider {
+        width: 200px;
+        margin: 24px 0;
+    }
+
+    .celebration-divider::before,
+    .celebration-divider::after {
+        font-size: 1.1rem;
+        left: -22px;
+        right: -22px;
+    }
+
+    .celebration-year-3d {
+        font-size: clamp(4.5rem, 20vw, 7rem);
+        letter-spacing: 10px;
+    }
+
+    .sparkle-1,
+    .sparkle-2,
+    .sparkle-3,
+    .sparkle-4 {
+        font-size: 1.4rem;
+    }
+
+    .celebration-ornament {
+        width: 140px;
+        height: 140px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Extra small phones */
+    html,
+    body {
+        font-size: 14px;
+    }
+
+    .countdown {
+        gap: 14px;
+    }
+
+    .time-card {
+        min-width: 140px;
+        padding: 20px 14px;
+    }
+
+    .time-value {
+        font-size: clamp(2.6rem, 12vw, 3.6rem);
+    }
+
+    .time-label {
+        font-size: 0.8rem;
+        letter-spacing: 1.5px;
+    }
+
+    .time-card.final-seconds {
+        width: 220px !important;
+        height: 220px !important;
+    }
+
+    .celebration-title-3d {
+        font-size: clamp(2rem, 7vw, 2.6rem);
+    }
+
+    .celebration-year-3d {
+        font-size: clamp(3.5rem, 18vw, 5.2rem);
+        letter-spacing: 6px;
+    }
+
+    .fullscreen-btn,
+    .twenty-second-btn {
+        top: 8px;
+        height: 34px;
+    }
+
+    .fullscreen-btn {
+        right: 10px;
+        width: 34px;
+    }
+
+    .twenty-second-btn {
+        right: 52px;
+        width: 56px;
+    }
 }
